@@ -9,12 +9,17 @@ class Room {
  public:
   vector<Item*> items;
   vector<Entity*> entities;
-  Exit north;
+  Room north;
+  Room south;
+  Room east;
+  Room west;
+
+  /*Exit north;
   Exit south;
   Exit east;
   Exit west;
   Exit up;
-  Exit down;
+  Exit down;*/
 };
 
 #endif
