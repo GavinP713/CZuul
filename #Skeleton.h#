@@ -7,6 +7,9 @@ using namespace std;
 
 class Skeleton : public Entity {
  public:
-  int damage = 3;
+  int damage;
+
+  virtual void encounterMessage();
+  virtual void deathMessage();
 };
 #endif

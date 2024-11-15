@@ -2,11 +2,14 @@
 #define EXIT_H
 
 #include "Room.h"
+#include "Item.h"
 
 class Exit {
 public:
-  Room start;
-  Room end;
+  Room* a;
+  Room* b;
+  bool locked;
+  Item* key;
 };
 
 #endif

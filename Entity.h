@@ -1,8 +1,10 @@
-#indef Entity_H
+#ifndef Entity_H
 #define Entity_H
 
 #include "Item.h"
 #include <vector>
+
+using namespace std;
 
 class Entity {
  public:

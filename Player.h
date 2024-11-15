@@ -4,6 +4,6 @@
 #include "Entity.h"
 #include "Item.h"
 
-class Player : Public Entity {
+class Player : public Entity {
 };
 #endif

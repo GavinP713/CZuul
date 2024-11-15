@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-class Merchant : Public Entity {
+class Merchant : public Entity {
 };
 
 #endif
