@@ -1,4 +1,4 @@
-#ifndef ROOM_H
+i#ifndef ROOM_H
 #define ROOM_H
 
 //#include "Exit.h"
@@ -23,12 +23,25 @@ class Room {
       locked = _locked;
     }
   };
+  // corresponds to cardinal directions
+  // i = 0: N
+  // i = 1: S
+  // i = 2: E
+  // i = 3: W
   Exit exits[4];
-  /*
-  Exit* north;
-  Exit* south;
-  Exit* east;
-  Exit* west;*/
+
+  int getOppositeExit(int exit) {
+    // if exit is even, add to get opposite
+    if (point % 2 == 0)
+    {
+        return point + 1;
+    }
+    // if exit is odd, subtract to get opposite
+    else
+    {
+        return point - 1;
+    }
+  }
 };
 
 #endif
