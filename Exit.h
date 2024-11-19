@@ -4,12 +4,13 @@
 #include "Room.h"
 #include "Item.h"
 
+class Room;
 class Exit {
 public:
   Room* a;
   Room* b;
-  bool locked;
   Item* key;
+  bool locked;
 };
 
 #endif
