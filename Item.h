@@ -5,16 +5,19 @@ class Item {
  public:
   char name[64] = "N/A";
   char description[256] = "N/A";
-  int weight = 0;
-  int cost = 0;
-  int heal = 0;
-  int damage = 0;
-  int defense = 0;
+  int weight;
+  int cost;
+  int damage;
+  int defense;
+  int heal; // how much health it heals when consumed
+  int usesPerTurn; // how many times it can be used per turn in combat
+  bool canDrop; 
   enum Type {
     WEAPON,
     ARMOR,
     CONSUMABLE,
-    KEY
+    KEY,
+    VALUABLE
   };
   Type type;
 };

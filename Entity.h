@@ -15,11 +15,5 @@ class Entity {
   void heal(int value);
   void giveItem(Item item);
   void removeItem(Item item);
-  
-  void printStats();
-  void printItems();
-  
-  void encounterMessage();
-  void deathMessage();
 };
 #endif
