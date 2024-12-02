@@ -13,6 +13,9 @@ Room* createLevel();
 void createExit(int exit, Room* roomA, Room* roomB, Item* key);
 void enterRoom(Room* room);
 
+vector<Item*> items;
+int gold;
+int health;
 bool inCombat;
 
 int main() {
@@ -21,7 +24,16 @@ int main() {
   enterRoom(start);
   
   while (true) {
-    
+	  // DISPLAY INFO
+	  	// display exits
+
+	  	// if entities, combat info/merchant info
+	
+	  // INPUT
+		// room commands
+	  
+	  	// if combat, combat commands
+	  	
   }
   
   return 0;
