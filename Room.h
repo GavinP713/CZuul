@@ -12,11 +12,18 @@ struct Exit {
   Room* room;
   Item* key;
   bool locked;
+
+  /*
+  Exit(){
+    room = NULL;
+    key = NULL;
+    locked = false;
+    };*/
   Exit(Room* _room, Item* _key, bool _locked) {
     room = _room;
     key = _key;
     locked = _locked;
-  };
+    }
 };
 
 class Room {
@@ -38,18 +45,9 @@ class Room {
     strcpy(name, _name);
     strcpy(description, _description);
   }
-  
-  int getOppositeExit(int exit) {
-    // if exit is even, add to get opposite
-    if (exit % 2 == 0)
-    {
-        return exit + 1;
-    }
-    // if exit is odd, subtract to get opposite
-    else
-    {
-        return exit - 1;
-    }
+
+  void setExit(int exit, Room* room, Item* key, bool locked) {
+    exits[exit] = new Exit(room, key, locked);
   }
 };
 

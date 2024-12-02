@@ -1,8 +1,6 @@
 #include "Room.h"
 #include "Item.h"
-#include "Player.h"
-#include "Merchant.h"
-#include "Skeleton.h"
+#include "Entity.h"
 
 #include <iostream>
 #include <cstring>
@@ -13,14 +11,15 @@ using namespace std;
 
 Room* createLevel();
 void createExit(int exit, Room* roomA, Room* roomB, Item* key);
+void enterRoom(Room* room);
 
 bool inCombat;
 
 int main() {
-  Player player;
   Room* start = createLevel();
 
   enterRoom(start);
+  
   while (true) {
     
   }
@@ -29,8 +28,8 @@ int main() {
 }
 
 void enterRoom(Room* room) {
-  cout >> room->name >> ": " >> endl;
-  cout >> room->description >> endl;
+  cout << room->name << ": " << endl;
+  cout << room->description << endl;
 }
 
 // creates all rooms, items, and enemies and returns the starting room.
@@ -111,36 +110,44 @@ unlocks the throne room.\
 
   strcpy(name, "Cell 1");
   strcpy(description, "It's empty");
-  Room* dHall = new Room();
+  Room* dHall = new Room(name, description);
 
   strcpy(name, "Cell 2");
   strcpy(description, "The skeleton of a prisoner long dead lay in the corner.");
-  Room* dCellB = new Room();
+  Room* dCellB = new Room(name, description);
   dCellB->items.push_back(bread);
   dCellB->items.push_back(bread);
 
   strcpy(name, "Cell 3");
   strcpy(description, "Small tick marks span the wall.");
-  Room* dCellC = new Room();
+  Room* dCellC = new Room(name, description);
   dCellC->items.push_back(rustyDagger);
 
   strcpy(name, "Warden's chamber");
   strcpy(description, "A small stone room with a wooden desk and bed");
-  Room* dCombat0 = new Room();
-  Skeleton* dGuard = new Skeleton();
+  Room* dCombat0 = new Room(name, description);
+  strcpy(name, "Skeleton Warden");
+  strcpy(description, "It seems violent. Wears leather shoulder pads");
+  Entity* dGuard = new Entity(name, description, Entity::ENEMY);
   dGuard->items.push_back(dKey);
   dGuard->items.push_back(leatherShoulderpads);
   dGuard->items.push_back(gem);
 
-  strcpy(name, "");
-  strcpy(description, "");
-  Room* cStairs = new Room();
+  strcpy(name, "Stair");
+  strcpy(description, "Winding stone stairs that lead from the dungeon to the castle.");
+  Room* cStairs = new Room(name, description);
 
-  Room* cHallWest = new Room();
+  strcpy(name, "West Hall");
+  strcpy(description, "A large stone hallway, darkness shrouds the path forward");
+  Room* cHallWest = new Room(name, description);
 
-  Room* cShop0 = new Room(); // shop
+  strcpy(name, "Shop");
+  strcpy(description, "Looks to have been an armory before the merchant repurposed it");
+  Room* cShop0 = new Room(name, description); // shop
   cShop0->items.push_back(bread);
-  Merchant* cMerchant = new Merchant();
+  strcpy(name, "Merhcant");
+  strcpy(description, "A friendly looking merchant");
+  Entity* cMerchant = new Entity(name, description, Entity::MERCHANT);
   cMerchant->items.push_back(bread);
   cMerchant->items.push_back(bread);
   cMerchant->items.push_back(bread);
@@ -157,47 +164,75 @@ unlocks the throne room.\
   cMerchant->items.push_back(tKey);
   cShop0->entities.push_back(cMerchant);
 
-  Room* cHallNorth = new Room();
+  strcpy(name, "North Hall");
+  strcpy(description, "torches line the wall, leading to a mysterious door");
+  Room* cHallNorth = new Room(name, description);
 
-  Room* cCombat0 = new Room();
-  cCombat0Skeleton0 = new Skeleton();
+  strcpy(name, "Chamber 1");
+  strcpy(description, "An old bedroom");
+  Room* cCombat0 = new Room(name, description);
+  strcpy(name, "Skeleton A");
+  strcpy(description, "wields a rusty dagger");
+  Entity* cCombat0Skeleton0 = new Entity(name, description, Entity::ENEMY);
   cCombat0Skeleton0->items.push_back(rustyDagger);
   cCombat0->entities.push_back(cCombat0Skeleton0);
-  cCombat0Skeleton1 = new Skeleton();
+  strcpy(name, "Skeleton B");
+  strcpy(description, "unarmed");
+  Entity* cCombat0Skeleton1 = new Entity(name, description, Entity::ENEMY);
   cCombat0Skeleton1->items.push_back(bread);
   cCombat0Skeleton1->items.push_back(enemyArmorWeak);
   cCombat0->entities.push_back(cCombat0Skeleton1);
 
-  Room* cChest0 = new Room();
+  strcpy(name, "Closet");
+  strcpy(description, "A chest lies inside");
+  Room* cChest0 = new Room(name, description);
   cChest0->items.push_back(steelDagger);
   cChest0->items.push_back(gem);
   cChest0->items.push_back(gem);
 
-  Room* cCombat1 = new Room();
-  cCombat1Skeleton0 = new Skeleton();
+  strcpy(name, "Chamber 2");
+  strcpy(description, "An older bedroom");
+  Room* cCombat1 = new Room(name, description);
+  strcpy(name, "Skeleton A");
+  strcpy(description, "Wears medium armor, wields a rusty dagger");
+  Entity* cCombat1Skeleton0 = new Entity(name, description, Entity::ENEMY);
   cCombat1Skeleton0->items.push_back(enemyArmorMedium);
   cCombat1Skeleton0->items.push_back(rustyDagger);
-  cCombat1Skeleton1 = new Skeleton();
+  strcpy(name, "Skeleton B");
+  strcpy(description, "Wears weak armor, wields a steel dagger");
+  Entity* cCombat1Skeleton1 = new Entity(name, description, Entity::ENEMY);
   cCombat1Skeleton1->items.push_back(enemyArmorWeak);
   cCombat1Skeleton1->items.push_back(steelDagger);
-  cCombat1Skeleton2 = new Skeleton();
+  strcpy(name, "Skeleton C");
+  strcpy(description, "Wears weak armor, unarmed");
+  Entity* cCombat1Skeleton2 = new Entity(name, description, Entity::ENEMY);
   cCombat1Skeleton2->items.push_back(enemyArmorWeak);
   cCombat1Skeleton2->items.push_back(gem);
 
-  Room* cCombat2 = new Room();
-  cCombat2Skeleton0 = new Skeleton();
+  strcpy(name, "Chamber 3");
+  strcpy(description, "The oldest bedroom");
+  Room* cCombat2 = new Room(name, description);
+  strcpy(name, "Skeleton A");
+  strcpy(description, "Wears strong armor and a bronze chestplate, wields a steel dagger");
+  Entity* cCombat2Skeleton0 = new Entity(name, description, Entity::ENEMY);
   cCombat2Skeleton0->items.push_back(enemyArmorStrong);
   cCombat2Skeleton0->items.push_back(bronzeChestplate);
   cCombat2Skeleton0->items.push_back(steelDagger);
-  cCombat2Skeleton1 = new Skeleton();
+  strcpy(name, "Skeleton B");
+  strcpy(description, "Wears medium armor, wields a steel sword");
+  Entity* cCombat2Skeleton1 = new Entity(name, description, Entity::ENEMY);
   cCombat2Skeleton1->items.push_back(enemyArmorMedium);
   cCombat2Skeleton1->items.push_back(steelSword);
-  cCombat2Skeleton2 = new Skeleton();
+  strcpy(name, "Skeleton C");
+  strcpy(description, "Wears medium armor, wields a steel dagger");
+  Entity* cCombat2Skeleton2 = new Entity(name, description, Entity::ENEMY);
   cCombat2Skeleton2->items.push_back(enemyArmorMedium);
   cCombat2Skeleton2->items.push_back(steelDagger);
   cCombat2Skeleton2->items.push_back(bread);
 
-  Room* cChest1 = new Room();
+  strcpy(name, "Closet");
+  strcpy(description, "A large chest lies inside");
+  Room* cChest1 = new Room(name, description);
   cChest1->items.push_back(rareGem);
   cChest1->items.push_back(rareGem);
   cChest1->items.push_back(rareGem);
@@ -205,11 +240,13 @@ unlocks the throne room.\
   cChest1->items.push_back(rareGem);
   cChest1->items.push_back(rareGem);
 
-  Room* cHallEast = new Room();
+  strcpy(name, "Hallway East");
+  strcpy(description, "A gilded stone hallway, large double doors lie at the end; the entrance to the castle");
+  Room* cHallEast = new Room(name, description);
 
-  Room* cBoss = new Room(); // end
-  cBossSkeleton = new Skeleton();
-  cBossSkeleton->items
+  strcpy(name, "Outside");
+  strcpy(description, "The large doors swings open, light streams in, you have escaped the castle.");
+  Room* cOutside = new Room(name, description); // end
 
   // connect rooms together
   createExit(2, dCellA, dHall, NULL);
@@ -223,10 +260,10 @@ unlocks the throne room.\
 
 // set key to null if the exit is not locked.
 // (side corresponds to cardinal directions: 0 = n, 1 = s, 2 = e, 3 = w)
-void createExit(int exit, Room* roomA, Room* roomB, Item* key) {
+void createExit(Room* roomA, int exit, Room* roomB, Item* key) {
   bool locked = (key == NULL) ? false : true;
   roomA->exits[exit] = new Room::Exit(roomB, key, locked);
-  roomB->exits[roomA.getOppositeExit(exit)] = new Room::Exit(roomA, key, locked);
+  roomB->exits[getOppositeExit(exit)] = new Room::Exit(roomA, key, locked);
 }
 
 // get index of exit on opposite side of room
