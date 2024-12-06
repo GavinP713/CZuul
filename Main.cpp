@@ -40,19 +40,36 @@ int main() {
     cin >> input;
     
     if (strcmp(input, "move") == 0) {
+      cout << "direction: ";
       cin >> input;
       
       if (strcmp(input, "north") == 0) {
-	enterRoom(currentRoom->rooms[0], currentRoom);
+	      enterRoom(currentRoom->getRoom(0), currentRoom);
       }
       else if (strcmp(input, "south") == 0) {
+        enterRoom(currentRoom->getRoom(1), currentRoom);
       }
       else if (strcmp(input, "east") == 0) {
+        enterRoom(currentRoom->getRoom(2), currentRoom);
       }
       else if (strcmp(input, "west") == 0) {
+        enterRoom(currentRoom->getRoom(3), currentRoom);
+      }
+      else if (strcmp(input, "cancel") == 0) {
+        continue;
       }
     }
     else if (strcmp(input, "pickup") == 0) {
+      cout << "item name: ";
+      cin >> input;
+
+      if (strcmp(input, "cancel") == 0) {
+        continue;
+      }
+    }
+    else if (strcmp(input, "quit") == 0) {
+      cout << "good riddance" << endl;
+      return;
     }
     else {
       cout << "Unkown command!" << endl;
@@ -66,19 +83,37 @@ void enterRoom(Room* room, Room* currentRoom) {
   cout << "" << endl;
   cout << "" << endl;
 
-  // direction player entered has no associated room
+  // direction player attempted to go has no associated exit
   if (room == NULL) {
     cout << "Room doesnt exist" << endl;
   }
   // enter the new room
   else {
-    // print room information
     currentRoom = room;
+
+    // print room
     cout << room->name << "---------------------------" << endl;
     cout << room->description << endl;
 
+    // print items
+    cout << "" << endl;
+    cout << "Items" << endl;
+    if (room->items.size() == 0) cout << "No items" << endl;
+    else foreach(Item* item in room->items) cout << item->name << ", " << endl;
+
+    // print entities
+    cout << "" << endl;
+    cout << "Entities" << endl;
+    if (room->entities.size() == 0) cout << "No entities" << endl;
+    else foreach(Entity* entity in room->entities) cout << entity->name << ", " << endl;
+
     // print exits
-    
+    cout << "" << endl;
+    cout << "Exits" << endl;
+    if (room->getExit(0) != NULL) cout << "North: " << room->name << endl;
+    if (room->getExit(1) != NULL) cout << "South: " << room->name << endl;
+    if (room->getExit(2) != NULL) cout << "East: " << room->name << endl;
+    if (room->getExit(3) != NULL) cout << "West: " << room->name << endl;
   }
 }
 

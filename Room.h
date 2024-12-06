@@ -5,8 +5,6 @@
 #include "Entity.h"
 #include <vector>
 
-class Room;
-
 class Room {
  public:
   // connects two rooms together
@@ -49,6 +47,14 @@ class Room {
 
   void setExit(int index, Exit* exit) {
     exits[index] = exit;
+  }
+
+  // return room on opposite end of exit
+  Room* getRoom(int i) {
+    Exit* exit = getExit(i);
+
+    if (exit.roomA == this) return exit.roomB;
+    else (exit.roomB == this) return exit.roomA;
   }
 };
 
