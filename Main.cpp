@@ -10,38 +10,76 @@
 using namespace std;
 
 Room* createLevel();
-void createExit(int exit, Room* roomA, Room* roomB, Item* key);
-void enterRoom(Room* room);
-
-vector<Item*> items;
-int gold;
-int health;
-bool inCombat;
+void createExit(Room* roomA, int index, Room* roomB, Item* key);
+void enterRoom(Room* room, Room* currentRoom);
+int oppositeExit(int exit);
+void printCommands();
 
 int main() {
-  Room* start = createLevel();
-
-  enterRoom(start);
+  cout << "Welcome to Zuul!" << endl;
+  cout << "~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+  printCommands();
+  cout << "" << endl;
+  cout << "" << endl;
+  cout << "Type help to display these commands whenever you want" << endl;
   
-  while (true) {
-	  // DISPLAY INFO
-	  	// display exits
+  char name[64];
+  char description[256];
+  strcpy(name, "You");
+  strcpy(description, "");
+  
+  Entity* player = new Entity(name, description, Entity::PLAYER);
+  Room* currentRoom = NULL;
+  
+  Room* start = createLevel();
+  enterRoom(start, currentRoom);
 
-	  	// if entities, combat info/merchant info
-	
-	  // INPUT
-		// room commands
-	  
-	  	// if combat, combat commands
-	  	
+  // Game loop
+  char input[64];
+  while (true) {
+    cin >> input;
+    
+    if (strcmp(input, "move") == 0) {
+      cin >> input;
+      
+      if (strcmp(input, "north") == 0) {
+	enterRoom(currentRoom->rooms[0], currentRoom);
+      }
+      else if (strcmp(input, "south") == 0) {
+      }
+      else if (strcmp(input, "east") == 0) {
+      }
+      else if (strcmp(input, "west") == 0) {
+      }
+    }
+    else if (strcmp(input, "pickup") == 0) {
+    }
+    else {
+      cout << "Unkown command!" << endl;
+    }
   }
   
   return 0;
 }
 
-void enterRoom(Room* room) {
-  cout << room->name << ": " << endl;
-  cout << room->description << endl;
+void enterRoom(Room* room, Room* currentRoom) {
+  cout << "" << endl;
+  cout << "" << endl;
+
+  // direction player entered has no associated room
+  if (room == NULL) {
+    cout << "Room doesnt exist" << endl;
+  }
+  // enter the new room
+  else {
+    // print room information
+    currentRoom = room;
+    cout << room->name << "---------------------------" << endl;
+    cout << room->description << endl;
+
+    // print exits
+    
+  }
 }
 
 // creates all rooms, items, and enemies and returns the starting room.
@@ -117,7 +155,7 @@ unlocks the throne room.\
   
   // create rooms and assign items and enemies
   strcpy(name, "Your Cell");
-  strcpy(description, "A damp and uncomfortable cell.");
+  strcpy(description, "You awaken in a damp cell, confused, shivering, and having no memory of arriving here.");
   Room* dCellA = new Room(name, description); // start
 
   strcpy(name, "Cell 1");
@@ -261,21 +299,24 @@ unlocks the throne room.\
   Room* cOutside = new Room(name, description); // end
 
   // connect rooms together
-  createExit(2, dCellA, dHall, NULL);
-  createExit(3, dCellB, dHall, NULL);
-  createExit(3, dCellC, dHall, NULL);
-  createExit(0, dCombat0, dHall, NULL);
-  createExit(1, cStairs, dHall, dKey);
+  createExit(dCellA, 2, dHall, NULL);
+  createExit(dCellB, 3, dHall, NULL);
+  createExit(dCellC, 3, dHall, NULL);
+  createExit(dCombat0, 0, dHall, NULL);
+  createExit(cStairs, 1, dHall, dKey);
 
   return dCellA;
 }
 
 // set key to null if the exit is not locked.
 // (side corresponds to cardinal directions: 0 = n, 1 = s, 2 = e, 3 = w)
-void createExit(Room* roomA, int exit, Room* roomB, Item* key) {
+void createExit(Room* roomA, int index, Room* roomB, Item* key) {
   bool locked = (key == NULL) ? false : true;
-  roomA->exits[exit] = new Room::Exit(roomB, key, locked);
-  roomB->exits[getOppositeExit(exit)] = new Room::Exit(roomA, key, locked);
+  
+  Room::Exit* exit = new Room::Exit(roomA, roomB, key, locked);
+  roomA->setExit(index, exit);
+  roomB->setExit(oppositeExit(index), exit);
+  //roomB->exits[getOppositeExit(exit)] = new Room::Exit(roomA, key, locked);
 }
 
 // get index of exit on opposite side of room
@@ -290,4 +331,26 @@ int oppositeExit(int exit) {
   {
       return exit - 1;
   }
+}
+
+void printCommands() {
+  cout << "" << endl;
+  cout << "Commands" << endl;
+  
+  cout << "help: display a list of valid commands" << endl;
+  cout << "move: moves into room at direction if it exists" << endl;
+  cout << "     EX" << endl;
+  cout << "     move north" << endl;
+  cout << "     move south" << endl;
+  cout << "     move east" << endl;
+  cout << "     move west" << endl;
+  cout << "pickup: puts an item in the current room into your inventory" << endl;
+  cout << "     EX" << endl;
+  cout << "     pickup Bread" << endl;
+  cout << "     pickup Key" << endl;
+  cout << "attack: attempt to damage a hostile entity of the name provided in the current room, the amount of damage is the sum of damage values from the weapons in your inventory" << endl;
+  cout << "     EX" << endl;
+  cout << "     attack Skeleton" << endl;
+  cout << "inventory: display the items in your inventory" << endl;
+  cout << "scan: display the items and entities in the current room" << endl;
 }

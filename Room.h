@@ -7,27 +7,24 @@
 
 class Room;
 
-// exits to other rooms
-struct Exit {
-  Room* room;
-  Item* key;
-  bool locked;
-
-  /*
-  Exit(){
-    room = NULL;
-    key = NULL;
-    locked = false;
-    };*/
-  Exit(Room* _room, Item* _key, bool _locked) {
-    room = _room;
-    key = _key;
-    locked = _locked;
-    }
-};
-
 class Room {
  public:
+  // connects two rooms together
+  struct Exit {
+    Room* roomA;
+    Room* roomB;
+    Item* key;
+    bool locked;
+    
+    Exit(Room* _roomA, Room* _roomB, Item* _key, bool _locked) {
+      roomA = _roomA;
+      roomB = _roomB;
+      key = _key;
+      locked = _locked;
+    }
+  };
+  
+  
   char name[64];
   char description[256];
   
@@ -39,15 +36,19 @@ class Room {
   // i = 1: S
   // i = 2: E
   // i = 3: W
-  Exit exits[4];
+  Exit* exits[4];
   
   Room(char _name[64], char _description[256]) {
     strcpy(name, _name);
     strcpy(description, _description);
   }
 
-  void setExit(int exit, Room* room, Item* key, bool locked) {
-    exits[exit] = new Exit(room, key, locked);
+  Exit* getExit(int i) {
+    return exits[i];
+  }
+
+  void setExit(int index, Exit* exit) {
+    exits[index] = exit;
   }
 };
 
